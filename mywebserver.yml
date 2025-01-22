@@ -7,8 +7,20 @@
       name: apache2
       state: present
     when: ansible_os_family =="Debian"
-  - name: i want to install apache2 webserver
+  - name: i want to install apache2 webservice
     apt:
-      name: apache2
-      state: absent
+      name: service
+      state: present
     when: ansible_os_family =="Debian"
+
+  - name: i want to install my httpd webserver on amazonnode
+    dnf:
+      name: httpd
+      state: present
+    when: ansible_os_family"== "RedHat"
+  
+  - name: i want to install my httpd webservice on amaxzon
+    dnf:
+      name: httpd
+      state: present
+    when: ansible_os_family"== "RedHat"
