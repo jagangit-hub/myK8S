@@ -3,5 +3,5 @@ variable: value
 myubuntuwebpack: apache2
 myredhadwebpack: httpd
 
-myjavaonubuntu: openjdk-8-jdk
+myjavaonubuntu: openjdk-17-jdk
 myjavaonredhat: java-1.8.0-openjdk-devel
