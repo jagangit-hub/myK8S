@@ -4,4 +4,4 @@ myubuntuwebpack: apache2
 myredhadwebpack: httpd
 
 myjavaonubuntu: openjdk-17-jdk
-myjavaonredhat: java-1.8.0-openjdk-devel
+myjavaonredhat: java-1.8.0-amazon-corretto
