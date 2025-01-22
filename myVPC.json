@@ -1,0 +1,189 @@
+{
+ "AWSTemplateFormatVersion" : "2010-09-09",
+
+ "Parameters":{
+
+  
+  "publicA2": {
+      "Description": "publicA2",
+      "Type": "AWS::EC2::AvailabilityZone::Name"
+  },
+  
+  
+  "PrivateA2": {
+      "Description": "PrivateA2",
+      "Type": "AWS::EC2::AvailabilityZone::Name"
+  }
+  
+  
+  
+  
+  
+ },
+
+"Resources":{
+    
+    "myVPC": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "192.168.0.0/22"
+        
+      }
+    },
+
+    
+    "publicSubnet": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone":{
+          "Ref":"publicA2"
+        },
+        "VpcId":{ "Ref": "myVPC" }
+        ,
+        "CidrBlock": "192.168.1.0/24"
+      }
+    },
+
+      
+      "PublicrouteTableName": {
+        "Type": "AWS::EC2::RouteTable",
+        "Properties": {
+          "VpcId": {
+            "Ref": "myVPC"
+          }
+        }
+      },
+             
+      
+      "PublicrouteTableAssocName": {
+        "Type": "AWS::EC2::SubnetRouteTableAssociation",
+        "Properties": {
+          "SubnetId": {"Ref":"publicSubnet"
+
+          },"RouteTableId":{
+            "Ref":"PublicrouteTableName"
+          }
+        }
+      },
+
+      
+      "myIGW": {
+        "Type": "AWS::EC2::InternetGateway"
+        
+      },
+      "AttachGateway": {
+        "Type": "AWS::EC2::VPCGatewayAttachment",
+        "Properties": {
+          "VpcId": {
+            "Ref":"myVPC"
+          },
+          "InternetGatewayId": { "Ref": "myIGW" }
+        }
+      },
+
+      
+      "PublicrouteName": {
+        "Type": "AWS::EC2::Route",
+        "Properties": {
+          "RouteTableId": {
+            "Ref":"PublicrouteTableName"
+          },
+          "DestinationCidrBlock": "0.0.0.0/0",
+          "GatewayId": {
+            "Ref":"myIGW"
+          }
+        }
+      },
+
+      
+      "PrivatesubnetName": {
+        "Type": "AWS::EC2::Subnet",
+        "Properties": {
+          "AvailabilityZone":{
+            "Ref":"PrivateA2"
+          },
+          "VpcId": {
+            "Ref":"myVPC"
+          },
+          "CidrBlock": "192.168.2.0/24"
+        }
+      },
+
+      
+      "PrivaterouteTableName": {
+        "Type": "AWS::EC2::RouteTable",
+        "Properties": {
+          "VpcId": {
+            "Ref":"myVPC"
+          }
+        }
+      },
+      
+      "PrivaterouteTableAssocName": {
+        "Type": "AWS::EC2::SubnetRouteTableAssociation",
+        "Properties": {
+          "SubnetId": {
+            "Ref":"PrivatesubnetName"
+          },
+          "RouteTableId": {
+            "Ref":"PrivaterouteTableName"
+          }
+        }
+      },
+
+      "myEIP" : {
+      "Type" : "AWS::EC2::EIP"
+      },
+
+      "NATGateway" : {
+       "Type" : "AWS::EC2::NatGateway",
+      "Properties" : {
+      "AllocationId" : { 
+          "Fn::GetAtt" : ["myEIP", "AllocationId"] 
+      },
+      "SubnetId" : { 
+          "Ref" : "publicSubnet" 
+      }
+     }
+},
+        
+        "PrivaterouteName": {
+          "Type": "AWS::EC2::Route",
+          "Properties": {
+            "RouteTableId": {
+              "Ref":"PrivaterouteTableName"
+            },
+            "DestinationCidrBlock": "0.0.0.0/0",
+            "GatewayId": {
+              "Ref":"NATGateway"
+            }
+          }
+        }
+        
+      
+      
+      
+      
+      
+      
+    
+},
+
+"Outputs":{
+  
+  "myVPCIS" : {
+    "Value" : {
+      "Ref":"myVPC"
+    }
+  },
+  
+  "myIGWID" : {
+    "Value" : {
+      "Ref":"myIGW"
+    }
+  }
+  
+  
+}
+
+}

@@ -1,0 +1,9 @@
+---
+- myStudents:
+  - name: jagan
+    phone: 98709809
+    email: jagan@gmail.com
+
+  - name: sri
+    phone: 23434
+    email: sri@gmail.com
