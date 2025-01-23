@@ -1,17 +1,5 @@
---- 
-- hosts: all
-  become: yes
-  tasks:
-  - name: I want to install git ( # apt get install git)
-    apt:
-        name: git
-        state: present
-  - name: I want to install tree
-    apt:
-        name: tree
-        state: present
-
-  - name: I want to install wget
-    apt:
-        name: wget
-        state: present
+---
+- name: i want to create a file
+  file: 
+      path: /home/jagan/myfile01
+      state: touch
